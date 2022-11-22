@@ -9,6 +9,7 @@
         List<Vehicle> queueing = new List<Vehicle>();
         Random rand = new Random();
         int randomvehicletype;
+        int time;
         do{
         randomvehicletype = rand.Next(1,4);
         if (randomvehicletype == 1)
@@ -36,8 +37,12 @@
             vehiclefueltype = "Diesel";
             Console.WriteLine("Your vehicle is " + typeofvehicle + " using " + vehiclefueltype);
             Console.WriteLine("Amount of fuel in the tank is " + tanksize);
+            Thread.Sleep(1000);
             amountofvehicles++;
         }
+        time = rand.Next(1500, 2200);
+        Thread.Sleep(time);
+        Console.Clear();
         Vehicle allvehicles = new Vehicle(typeofvehicle, tanksize, vehiclefueltype);
         queueing.Add(allvehicles);
         } while (amountofvehicles < 10);
