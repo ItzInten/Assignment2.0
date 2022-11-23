@@ -1,22 +1,39 @@
 ﻿class Program
 {
+    public static List<Vehicle> queueing = new List<Vehicle>();
     public static string typeofvehicle;
     public static int tanksize;
     public static string vehiclefueltype;
     public static int amountofvehicles;
+    public static string fueltype;
     static void Main(string[] args)
     {
-        List<Vehicle> queueing = new List<Vehicle>();
+        Program mainprog = new Program();
         Random rand = new Random();
+        Thread thread2 = new Thread(GasStation.queueingSystem);
+        thread2.Start();
         int randomvehicletype;
         int time;
+        int randomfuel;
         do{
         randomvehicletype = rand.Next(1,4);
         if (randomvehicletype == 1)
         {
             typeofvehicle = "Car";
             tanksize = rand.Next(1,26);
-            vehiclefueltype = "Petrol";
+            randomfuel = rand.Next(1,4);
+            if (randomfuel == 1)
+            {
+                vehiclefueltype = "Petrol";
+            }
+            else if (randomfuel == 2)
+            {
+                vehiclefueltype = "Diesel";
+            }
+            else if (randomfuel == 3)
+            {
+                vehiclefueltype = "LPG";
+            }
             Console.WriteLine("Your vehicle is " + typeofvehicle + " using " + vehiclefueltype);
             Console.WriteLine("Amount of fuel in the tank is " + tanksize);
             amountofvehicles++;
@@ -25,7 +42,15 @@
         {
             typeofvehicle = "Van";
             tanksize = rand.Next(1,41);
-            vehiclefueltype = "Fuel Oil";
+            randomfuel = rand.Next(1,3);
+            if (randomfuel == 1)
+            {
+                vehiclefueltype = "Diesel";
+            }
+            else if (randomfuel == 2)
+            {
+                vehiclefueltype = "LPG";
+            }
             Console.WriteLine("Your vehicle is " + typeofvehicle + " using " + vehiclefueltype);
             Console.WriteLine("Amount of fuel in the tank is " + tanksize);
             amountofvehicles++;
@@ -37,7 +62,6 @@
             vehiclefueltype = "Diesel";
             Console.WriteLine("Your vehicle is " + typeofvehicle + " using " + vehiclefueltype);
             Console.WriteLine("Amount of fuel in the tank is " + tanksize);
-            Thread.Sleep(1000);
             amountofvehicles++;
         }
         time = rand.Next(1500, 2200);
@@ -46,10 +70,11 @@
         Vehicle allvehicles = new Vehicle(typeofvehicle, tanksize, vehiclefueltype);
         queueing.Add(allvehicles);
         } while (amountofvehicles < 10);
-        foreach (var item in queueing)
+        /*foreach (Vehicle allvehicles in queueing)
         {
-	        Console.WriteLine(item);
+	        Console.WriteLine(allvehicles.vehicletype +" "+ allvehicles.tankcapacity +" "+ allvehicles.petroltype);
         }
+        */
         Console.ReadKey();
     }
 }
