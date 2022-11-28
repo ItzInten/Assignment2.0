@@ -1,4 +1,5 @@
-﻿class Program
+﻿using System.IO;
+class Program
 {
     public static List<Vehicle> queueing = new List<Vehicle>();
     public static string typeofvehicle;
@@ -9,6 +10,17 @@
     public static int amountofvans;
     public static int amountofhgvs;
     public static string fueltype;
+    public static bool pump1status = false;
+    public static bool pump2status = false;
+    public static bool pump3status = false;
+    public static bool pump4status = false;
+    public static bool pump5status = false;
+    public static bool pump6status = false;
+    public static bool pump7status = false;
+    public static bool pump8status = false;
+    public static bool pump9status = false;
+    public static string username;
+    public static string password;
     static void Main(string[] args)
     {
         Program mainprog = new Program();
@@ -22,12 +34,10 @@
         Thread pump7 = new Thread(GasStation.queueingSystem);
         Thread pump8 = new Thread(GasStation.queueingSystem);
         Thread pump9 = new Thread(GasStation.queueingSystem);
-        pump1.Start();
-        //pump4.Start();
-        //pump7.Start();
         int randomvehicletype;
         int time;
         int randomfuel;
+        pump1.Start();
         do{
         randomvehicletype = rand.Next(1,4);
         if (randomvehicletype == 1)

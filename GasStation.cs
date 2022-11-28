@@ -3,10 +3,12 @@ class GasStation
     static public string waitingstatus = "avail";
     static public string pumpstatus = "busy";
     static public int fuelledvehicles = 0;
+    static public double petrolLitresSold, dieselLitresSold, LPGLitresSold, totalpetrolsold, totaldieselsold, totalLPGsold, money = 0;
+    public static StreamWriter datafile = new StreamWriter("fuelstationData.txt");
     static public void intrface()
     {
         Console.WriteLine("----------------------------------");
-        Console.WriteLine("Queue: Cars: " + Program.amountofcars +  " Vans: " + Program.amountofvans +  " HGVs: " + Program.amountofhgvs);
+        Console.WriteLine("Queue: Cars: " + Program.amountofcars + " Vans: " + Program.amountofvans + " HGVs: " + Program.amountofhgvs);
         Console.WriteLine("----------------------------------");
         Console.WriteLine("Today we've fuelled " + fuelledvehicles + " Vehicles");
         Console.WriteLine("----------------------------------");
@@ -16,67 +18,104 @@ class GasStation
     }
     public static void queueingSystem()
     {
+        Console.Write("Please enter your username: ");
+        Program.username = Console.ReadLine();
+        datafile.WriteLine(Program.username);
+        Console.Write("Please enter your password: ");
+        Program.password = Console.ReadLine();
+        datafile.WriteLine(Program.password);
+        Console.Clear();
         do
         {
             foreach (Vehicle allvehicles in Program.queueing.ToList())
             {
-                int fuellingtime;
+                double fuellingtime;
                 if (allvehicles.vehicletype == "Car")
                 {
                     Console.WriteLine(allvehicles.vehicletype + " " + allvehicles.tankcapacity + " " + allvehicles.petroltype);
-                    fuellingtime = 50 - allvehicles.tankcapacity;
+                    fuellingtime = (50 - allvehicles.tankcapacity) / 1.5;
+                    totalpetrolsold += 50 - allvehicles.tankcapacity;
+                    petrolLitresSold = 50 - allvehicles.tankcapacity;
+                    money += 1.75 * petrolLitresSold;
                     Console.WriteLine("Vehicle is fuelling, please wait");
                     waitingstatus = "busy";
                     GasStation.intrface();
-                    Thread.Sleep(fuellingtime * 100);
+                    Thread.Sleep(Convert.ToInt32(fuellingtime * 100));
                     Console.Clear();
                     Console.WriteLine("Pump is free now");
                     waitingstatus = "avail";
                     GasStation.intrface();
                     Program.queueing.Remove(allvehicles);
                     Program.amountofcars--;
-                    Program.amountofvehicles--;
                     fuelledvehicles++;
                     Console.Clear();
                 }
                 else if (allvehicles.vehicletype == "Van")
                 {
                     Console.WriteLine(allvehicles.vehicletype + " " + allvehicles.tankcapacity + " " + allvehicles.petroltype);
-                    fuellingtime = 80 - allvehicles.tankcapacity;
+                    fuellingtime = (80 - allvehicles.tankcapacity) / 1.5;
+                    totaldieselsold += 80 - allvehicles.tankcapacity;
+                    dieselLitresSold = 80 - allvehicles.tankcapacity;
+                    money += 1.85 * dieselLitresSold;
                     Console.WriteLine("Vehicle is fuelling, please wait");
                     waitingstatus = "busy";
                     GasStation.intrface();
-                    Thread.Sleep(fuellingtime * 100);
+                    Thread.Sleep(Convert.ToInt32(fuellingtime * 100));
                     Console.Clear();
                     Console.WriteLine("Pump is free now");
                     waitingstatus = "avail";
                     GasStation.intrface();
                     Program.queueing.Remove(allvehicles);
                     Program.amountofvans--;
-                    Program.amountofvehicles--;
                     fuelledvehicles++;
                     Console.Clear();
                 }
                 else if (allvehicles.vehicletype == "HGV")
                 {
                     Console.WriteLine(allvehicles.vehicletype + " " + allvehicles.tankcapacity + " " + allvehicles.petroltype);
-                    fuellingtime = 150 - allvehicles.tankcapacity;
+                    fuellingtime = (150 - allvehicles.tankcapacity) / 1.5;
+                    totalLPGsold += 150 - allvehicles.tankcapacity;
+                    LPGLitresSold = 150 - allvehicles.tankcapacity;
+                    money += 0.82 * LPGLitresSold;
                     Console.WriteLine("Vehicle is fuelling, please wait");
                     waitingstatus = "busy";
                     GasStation.intrface();
-                    Thread.Sleep(fuellingtime * 100);
+                    Thread.Sleep(Convert.ToInt32(fuellingtime * 100));
                     Console.Clear();
                     Console.WriteLine("Pump is free now");
                     waitingstatus = "avail";
                     GasStation.intrface();
                     Program.queueing.Remove(allvehicles);
                     Program.amountofhgvs--;
-                    Program.amountofvehicles--;
                     fuelledvehicles++;
                     Console.Clear();
                 }
             }
-        } while (Program.queueing != null && Program.amountofvehicles != 0);
+        } while (fuelledvehicles != 10);
+        foreach (Vehicle allvehicles in Program.queueing)
+        {
+            Console.WriteLine(allvehicles.vehicletype + " " + allvehicles.tankcapacity + " " + allvehicles.petroltype);
+        }
+        datafile.WriteLine("    " + "Petrol: " + totalpetrolsold);
+        datafile.WriteLine("    " + "Diesel: " + totaldieselsold);
+        datafile.WriteLine("    " + "LPG: " + totalLPGsold);
+        datafile.WriteLine("Cost: " + money + " GBP");
+        datafile.WriteLine("1%:   " + money / 100 + " GBP");
+        datafile.WriteLine("Vehicles serviced: " + fuelledvehicles);
+        try
+        {
+            using (StreamReader datefile = new StreamReader("fuelstationData.txt"))
+            {
+                String line = datefile.ReadToEnd();
+                Console.WriteLine(line);
+                datefile.Close();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Exception: " + e.Message);
+        }
+        datafile.Close();
         Console.WriteLine("There is no vehicles in the queue! ");
         Console.ReadKey();
     }
