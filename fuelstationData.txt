@@ -1,8 +1,8 @@
-    Login: borys
-    Password: prydatko
-    Petrol: 123
-    Diesel: 316
-    LPG: 227
-Cost: 985.99 GBP
-1%:   9.8599 GBP
+    Login: fjsd
+    Password: sdfsdf
+    Petrol: 45
+    Diesel: 372
+    LPG: 369
+Cost: 1069.5300000000002 GBP
+1%:   10.695300000000001 GBP
 Vehicles serviced: 10

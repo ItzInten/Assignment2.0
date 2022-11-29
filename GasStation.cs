@@ -12,9 +12,9 @@ class GasStation
         Console.WriteLine("----------------------------------");
         Console.WriteLine("Today we've fuelled " + fuelledvehicles + " Vehicles");
         Console.WriteLine("----------------------------------");
-        Console.WriteLine("Line 1:   Pump 1:  " + waitingstatus + "  Pump 2:  " + waitingstatus + "  Pump 3:  " + waitingstatus);
-        Console.WriteLine("Line 2:   Pump 4:  " + waitingstatus + "  Pump 5:  " + waitingstatus + "  Pump 6:  " + waitingstatus);
-        Console.WriteLine("Line 3:   Pump 7:  " + waitingstatus + "  Pump 8:  " + waitingstatus + "  Pump 9:  " + waitingstatus);
+        Console.WriteLine("Line 1:   Pump 1:  " + waitingstatus + "  Pump 2:  " +  "  Pump 3:  ");
+        Console.WriteLine("Line 2:   Pump 4:       " + "  Pump 5:  " +  "  Pump 6:  ");
+        Console.WriteLine("Line 3:   Pump 7:       " + "  Pump 8:  " +  "  Pump 9:  ");
     }
     public static void queueingSystem()
     {
@@ -45,6 +45,7 @@ class GasStation
                     Console.WriteLine("Pump is free now");
                     waitingstatus = "avail";
                     GasStation.intrface();
+                    Thread.Sleep(1000);
                     Program.queueing.Remove(allvehicles);
                     Program.amountofcars--;
                     fuelledvehicles++;
@@ -65,6 +66,7 @@ class GasStation
                     Console.WriteLine("Pump is free now");
                     waitingstatus = "avail";
                     GasStation.intrface();
+                    Thread.Sleep(1000);
                     Program.queueing.Remove(allvehicles);
                     Program.amountofvans--;
                     fuelledvehicles++;
@@ -85,6 +87,7 @@ class GasStation
                     Console.WriteLine("Pump is free now");
                     waitingstatus = "avail";
                     GasStation.intrface();
+                    Thread.Sleep(1000);
                     Program.queueing.Remove(allvehicles);
                     Program.amountofhgvs--;
                     fuelledvehicles++;
