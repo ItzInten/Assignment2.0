@@ -20,10 +20,10 @@ class GasStation
     {
         Console.Write("Please enter your username: ");
         Program.username = Console.ReadLine();
-        datafile.WriteLine(Program.username);
+        datafile.WriteLine("    " + "Login: " + Program.username);
         Console.Write("Please enter your password: ");
         Program.password = Console.ReadLine();
-        datafile.WriteLine(Program.password);
+        datafile.WriteLine("    " + "Password: " + Program.password);
         Console.Clear();
         do
         {
@@ -95,13 +95,14 @@ class GasStation
         foreach (Vehicle allvehicles in Program.queueing)
         {
             Console.WriteLine(allvehicles.vehicletype + " " + allvehicles.tankcapacity + " " + allvehicles.petroltype);
-        }
+        };
         datafile.WriteLine("    " + "Petrol: " + totalpetrolsold);
         datafile.WriteLine("    " + "Diesel: " + totaldieselsold);
         datafile.WriteLine("    " + "LPG: " + totalLPGsold);
         datafile.WriteLine("Cost: " + money + " GBP");
         datafile.WriteLine("1%:   " + money / 100 + " GBP");
         datafile.WriteLine("Vehicles serviced: " + fuelledvehicles);
+        datafile.Close();
         try
         {
             using (StreamReader datefile = new StreamReader("fuelstationData.txt"))
