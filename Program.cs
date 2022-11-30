@@ -2,6 +2,7 @@
 class Program
 {
     public static List<Vehicle> queueing = new List<Vehicle>();
+    public static Vehicle allvehicles = new Vehicle(typeofvehicle, tanksize, vehiclefueltype);
     public static string typeofvehicle;
     public static int tanksize;
     public static string vehiclefueltype;
