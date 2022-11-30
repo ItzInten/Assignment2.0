@@ -2,9 +2,10 @@
 class Program
 {
     public static List<Vehicle> queueing = new List<Vehicle>();
-    public static Vehicle allvehicles = new Vehicle(typeofvehicle, tanksize, vehiclefueltype);
+    public static List<Pump> fuelpumps = new List<Pump>(9);
     public static string typeofvehicle;
     public static int tanksize;
+    public static int neededpump = 0;
     public static string vehiclefueltype;
     public static int amountofvehicles;
     public static int amountofcars;
@@ -28,14 +29,20 @@ class Program
         Random rand = new Random();
         Console.Write("Please enter your username: ");
         username = Console.ReadLine();
-        GasStation.datafile.WriteLine("    " + "Login: " + username);
+        Pump.datafile.WriteLine("    " + "Login: " + username);
         Console.Write("Please enter your password: ");
         password = Console.ReadLine();
-        GasStation.datafile.WriteLine("    " + "Password: " + password);
+        Pump.datafile.WriteLine("    " + "Password: " + password);
         Console.Clear();
         int randomvehicletype;
         int time;
         int randomfuel;
+        int counter = 0;
+        for (int i = 0; i < 9; i++)
+        {
+            Pump newpump = new Pump();
+            fuelpumps.Add(newpump);
+        }
         do{
         randomvehicletype = rand.Next(1,4);
         if (randomvehicletype == 1)
@@ -56,7 +63,7 @@ class Program
                 vehiclefueltype = "LPG";
             }
             amountofvehicles++;
-            GasStation.vehicelinqueue++;
+            Pump.vehicelinqueue++;
         }
         else if (randomvehicletype == 2)
         {
@@ -75,7 +82,7 @@ class Program
             //Console.WriteLine("Amount of fuel in the tank is " + tanksize);
             amountofvans++;
             amountofvehicles++;
-            GasStation.vehicelinqueue++;
+            Pump.vehicelinqueue++;
         }
         else if (randomvehicletype == 3)
         {
@@ -86,22 +93,29 @@ class Program
             //Console.WriteLine("Amount of fuel in the tank is " + tanksize);
             amountofhgvs++;
             amountofvehicles++;
-            GasStation.vehicelinqueue++;
+            Pump.vehicelinqueue++;
         }
         time = rand.Next(1500, 2200);
         Thread.Sleep(time);
         Vehicle allvehicles = new Vehicle(typeofvehicle, tanksize, vehiclefueltype);
-        Thread pumps = new Thread(() => GasStation.queueingSystem(allvehicles));
-        if (GasStation.vehicelinqueue == 1)
+        for (int i = 8; i >= 0; i--)
         {
-            pumps.Start();
-            pump9status = "busy";
+            counter++;
+            if (fuelpumps[i].Available == "avail" && counter == 1)
+            {
+                neededpump = i;
+            }
         }
+        fuelpumps[neededpump].addvehicle(allvehicles);
         queueing.Add(allvehicles);
         } while (amountofvehicles < 10);
         foreach (Vehicle allvehicles in queueing)
         {
 	        Console.WriteLine(allvehicles.vehicletype +" "+ allvehicles.tankcapacity +" "+ allvehicles.petroltype);
+        }
+        if (queueing == null)
+        {
+            Console.WriteLine("List is empty!");
         }
         Console.ReadKey();
     }
