@@ -10,34 +10,31 @@ class Program
     public static int amountofvans;
     public static int amountofhgvs;
     public static string fueltype;
-    public static bool pump1status = false;
-    public static bool pump2status = false;
-    public static bool pump3status = false;
-    public static bool pump4status = false;
-    public static bool pump5status = false;
-    public static bool pump6status = false;
-    public static bool pump7status = false;
-    public static bool pump8status = false;
-    public static bool pump9status = false;
+    public static string pump1status = "avail";
+    public static string pump2status = "avail";
+    public static string pump3status = "avail";
+    public static string pump4status = "avail";
+    public static string pump5status = "avail";
+    public static string pump6status = "avail";
+    public static string pump7status = "avail";
+    public static string pump8status = "avail";
+    public static string pump9status = "avail";
     public static string username;
     public static string password;
     static void Main(string[] args)
     {
         Program mainprog = new Program();
         Random rand = new Random();
-        Thread pump1 = new Thread(GasStation.queueingSystem);
-        Thread pump2 = new Thread(GasStation.queueingSystem);
-        Thread pump3 = new Thread(GasStation.queueingSystem);
-        Thread pump4 = new Thread(GasStation.queueingSystem);
-        Thread pump5 = new Thread(GasStation.queueingSystem);
-        Thread pump6 = new Thread(GasStation.queueingSystem);
-        Thread pump7 = new Thread(GasStation.queueingSystem);
-        Thread pump8 = new Thread(GasStation.queueingSystem);
-        Thread pump9 = new Thread(GasStation.queueingSystem);
+        Console.Write("Please enter your username: ");
+        username = Console.ReadLine();
+        GasStation.datafile.WriteLine("    " + "Login: " + username);
+        Console.Write("Please enter your password: ");
+        password = Console.ReadLine();
+        GasStation.datafile.WriteLine("    " + "Password: " + password);
+        Console.Clear();
         int randomvehicletype;
         int time;
         int randomfuel;
-        pump1.Start();
         do{
         randomvehicletype = rand.Next(1,4);
         if (randomvehicletype == 1)
@@ -57,10 +54,8 @@ class Program
             {
                 vehiclefueltype = "LPG";
             }
-            //Console.WriteLine("Your vehicle is " + typeofvehicle + " using " + vehiclefueltype);
-            //Console.WriteLine("Amount of fuel in the tank is " + tanksize);
-            amountofcars++;
             amountofvehicles++;
+            GasStation.vehicelinqueue++;
         }
         else if (randomvehicletype == 2)
         {
@@ -79,6 +74,7 @@ class Program
             //Console.WriteLine("Amount of fuel in the tank is " + tanksize);
             amountofvans++;
             amountofvehicles++;
+            GasStation.vehicelinqueue++;
         }
         else if (randomvehicletype == 3)
         {
@@ -89,10 +85,17 @@ class Program
             //Console.WriteLine("Amount of fuel in the tank is " + tanksize);
             amountofhgvs++;
             amountofvehicles++;
+            GasStation.vehicelinqueue++;
         }
         time = rand.Next(1500, 2200);
         Thread.Sleep(time);
         Vehicle allvehicles = new Vehicle(typeofvehicle, tanksize, vehiclefueltype);
+        Thread pumps = new Thread(() => GasStation.queueingSystem(allvehicles));
+        if (GasStation.vehicelinqueue == 1)
+        {
+            pumps.Start();
+            pump9status = "busy";
+        }
         queueing.Add(allvehicles);
         } while (amountofvehicles < 10);
         foreach (Vehicle allvehicles in queueing)
