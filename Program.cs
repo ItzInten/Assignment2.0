@@ -44,6 +44,9 @@ class Program
             fuelpumps.Add(newpump);
         }
         do{
+        // Pump.intrface();
+        // Thread.Sleep(1500);
+        // Console.Clear();
         randomvehicletype = rand.Next(1,4);
         if (randomvehicletype == 1)
         {
@@ -87,7 +90,7 @@ class Program
         else if (randomvehicletype == 3)
         {
             typeofvehicle = "HGV";
-            tanksize = rand.Next(1,76);
+             
             vehiclefueltype = "Diesel";
             //Console.WriteLine("Your vehicle is " + typeofvehicle + " using " + vehiclefueltype);
             //Console.WriteLine("Amount of fuel in the tank is " + tanksize);
@@ -101,14 +104,24 @@ class Program
         for (int i = 8; i >= 0; i--)
         {
             counter++;
-            if (fuelpumps[i].Available == "avail" && counter == 1)
+            if (fuelpumps[i].Available == "avail") //main problem is here
             {
                 neededpump = i;
             }
         }
-        fuelpumps[neededpump].addvehicle(allvehicles);
+        counter = 0;
         queueing.Add(allvehicles);
+        fuelpumps[neededpump].addvehicle(allvehicles);
+        // Pump.intrface();
+        // Thread.Sleep(1500);
+        // Console.Clear();
         } while (amountofvehicles < 10);
+        // do
+        // {
+        // Pump.intrface();
+        // Thread.Sleep(1500);
+        // Console.Clear();
+        // }while (queueing != null);
         foreach (Vehicle allvehicles in queueing)
         {
 	        Console.WriteLine(allvehicles.vehicletype +" "+ allvehicles.tankcapacity +" "+ allvehicles.petroltype);

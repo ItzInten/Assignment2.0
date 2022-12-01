@@ -4,7 +4,7 @@ public class Pump
     static public int vehicelinqueue = 0;
     static public double petrolLitresSold, dieselLitresSold, LPGLitresSold, totalpetrolsold, totaldieselsold, totalLPGsold, money = 0;
     public static StreamWriter datafile = new StreamWriter("fuelstationData.txt");
-    public string Available { get; set; }
+    public string Available = "avail";
     public Vehicle pumpvehicle { get; set; }
     public void addvehicle(Vehicle passvehicle)
     {
@@ -26,11 +26,13 @@ public class Pump
             busyvehicles();
             intrface();
             Thread.Sleep(Convert.ToInt32(fuellingtime * 100));
-            Console.Clear();;
+            Console.Clear();
             fuelledvehicles++;
+            Program.queueing.Remove(pumpvehicle);
+            Available = "avail";
+            availvehicles();
             intrface();
             Thread.Sleep(1000);
-            Program.queueing.Remove(pumpvehicle);
             Console.Clear();
         }
         else if (pumpvehicle.vehicletype == "Van")
@@ -45,9 +47,11 @@ public class Pump
             Thread.Sleep(Convert.ToInt32(fuellingtime * 100));
             Console.Clear();
             fuelledvehicles++;
+            Program.queueing.Remove(pumpvehicle);
+            Available = "avail";
+            availvehicles();
             intrface();
             Thread.Sleep(1000);
-            Program.queueing.Remove(pumpvehicle);
             Console.Clear();
         }
         else if (pumpvehicle.vehicletype == "HGV")
@@ -62,12 +66,13 @@ public class Pump
             Thread.Sleep(Convert.ToInt32(fuellingtime * 100));
             Console.Clear();
             fuelledvehicles++;
+            Program.queueing.Remove(pumpvehicle);
+            Available = "avail";
+            availvehicles();
             intrface();
             Thread.Sleep(1000);
-            Program.queueing.Remove(pumpvehicle);
             Console.Clear();
         }
-        Available = "avail";
     }
     static public void intrface()
     {
@@ -141,6 +146,45 @@ public class Pump
         else if (Program.neededpump == 0)
         {
             Program.pump1status = "busy";
+        }
+    }
+    public void availvehicles()
+    {
+        if (Program.neededpump == 8)
+        {
+            Program.pump9status = "avail";
+        }
+        else if (Program.neededpump == 7)
+        {
+            Program.pump8status = "avail";
+        }
+        else if (Program.neededpump == 6)
+        {
+            Program.pump7status = "avail";
+        }
+        else if (Program.neededpump == 5)
+        {
+            Program.pump6status = "avail";
+        }
+        else if (Program.neededpump == 4)
+        {
+            Program.pump5status = "avail";
+        }
+        else if (Program.neededpump == 3)
+        {
+            Program.pump4status = "avail";
+        }
+        else if (Program.neededpump == 2)
+        {
+            Program.pump3status = "avail";
+        }
+        else if (Program.neededpump == 1)
+        {
+            Program.pump2status = "avail";
+        }
+        else if (Program.neededpump == 0)
+        {
+            Program.pump1status = "avail";
         }
     }
 }
