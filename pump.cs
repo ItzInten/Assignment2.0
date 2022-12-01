@@ -6,75 +6,63 @@ public class Pump
     public static StreamWriter datafile = new StreamWriter("fuelstationData.txt");
     public string Available = "avail";
     public Vehicle pumpvehicle { get; set; }
-    public void addvehicle(Vehicle passvehicle)
+    public void addvehicle(Vehicle passvehicle)//this method is for passing vehicle from the queue
     {
         pumpvehicle = passvehicle;
-        Thread pumps = new Thread(() => processvehicle(pumpvehicle));
+        Thread pumps = new Thread(() => processvehicle(pumpvehicle));//creating a new thread for each new vehicle
         pumps.Start();
     }
-    private void processvehicle(Vehicle pumpvehicle)
+    private void processvehicle(Vehicle pumpvehicle) //this method is for processing vehicles
     {
-        Available = "busy";
+        Available = "busy"; //changing pump status, because now it's going to be busy
         double fuellingtime;
-        if (pumpvehicle.vehicletype == "Car")
+        if (pumpvehicle.vehicletype == "Car") //this if statement is for checking whether the vehicle a car or other type of vehicles
         {
             Console.WriteLine(pumpvehicle.vehicletype + " " + pumpvehicle.tankcapacity + " " + pumpvehicle.petroltype);
-            fuellingtime = (50 - pumpvehicle.tankcapacity) / 1.5;
-            totalpetrolsold += 50 - pumpvehicle.tankcapacity;
-            petrolLitresSold = 50 - pumpvehicle.tankcapacity;
-            money += 1.75 * petrolLitresSold;
-            busyvehicles();
-            intrface();
-            Thread.Sleep(Convert.ToInt32(fuellingtime * 100));
-            Console.Clear();
+            fuellingtime = (50 - pumpvehicle.tankcapacity) / 1.5; //we have a criteria which says that pump can dispense 1.5 litres/second
+            totalpetrolsold += 50 - pumpvehicle.tankcapacity;//total diesel sold
+            petrolLitresSold = 50 - pumpvehicle.tankcapacity;//how much litres of petrol have been sold for this vehicle
+            money += 1.75 * petrolLitresSold; // total earned money for cars
+            busyvehicles();//this method is for interface which can show to us different condition of vehicles but this method is for busy condition
+            Thread.Sleep(Convert.ToInt32(fuellingtime * 100)); //thread is sleeping which shows that car is fuelling
             fuelledvehicles++;
-            Program.queueing.Remove(pumpvehicle);
-            Available = "avail";
-            availvehicles();
-            intrface();
-            Thread.Sleep(1000);
-            Console.Clear();
+            Program.queueing.Remove(pumpvehicle); // removing car from the list
+            Available = "avail"; //pump is getting available
+            Program.amountofcars--;
+            availvehicles(); //this method is for interface which can show to us different condition of vehicles
         }
         else if (pumpvehicle.vehicletype == "Van")
         {
             Console.WriteLine(pumpvehicle.vehicletype + " " + pumpvehicle.tankcapacity + " " + pumpvehicle.petroltype);
-            fuellingtime = (80 - pumpvehicle.tankcapacity) / 1.5;
-            totaldieselsold += 80 - pumpvehicle.tankcapacity;
-            dieselLitresSold = 80 - pumpvehicle.tankcapacity;
-            money += 1.85 * dieselLitresSold;
-            busyvehicles();
-            intrface();
-            Thread.Sleep(Convert.ToInt32(fuellingtime * 100));
-            Console.Clear();
+            fuellingtime = (80 - pumpvehicle.tankcapacity) / 1.5;//we have a criteria which says that pump can dispense 1.5 litres/second
+            totaldieselsold += 80 - pumpvehicle.tankcapacity;//total diesel sold
+            dieselLitresSold = 80 - pumpvehicle.tankcapacity;//how much litres of diesel have been sold for this vehicle
+            money += 1.85 * dieselLitresSold;// total earned money for vans
+            busyvehicles();//this method is for interface which can show to us different condition of vehicles but this method is for busy condition
+            Thread.Sleep(Convert.ToInt32(fuellingtime * 100));//thread is sleeping which shows that van is fuelling
             fuelledvehicles++;
-            Program.queueing.Remove(pumpvehicle);
-            Available = "avail";
-            availvehicles();
-            intrface();
-            Thread.Sleep(1000);
-            Console.Clear();
+            Program.queueing.Remove(pumpvehicle);// removing van from the list
+            Available = "avail";//pump is getting available
+            Program.amountofvans--;
+            availvehicles();//this method is for interface which can show to us different condition of vehicles
         }
         else if (pumpvehicle.vehicletype == "HGV")
         {
             Console.WriteLine(pumpvehicle.vehicletype + " " + pumpvehicle.tankcapacity + " " + pumpvehicle.petroltype);
-            fuellingtime = (150 - pumpvehicle.tankcapacity) / 1.5;
-            totalLPGsold += 150 - pumpvehicle.tankcapacity;
-            LPGLitresSold = 150 - pumpvehicle.tankcapacity;
-            money += 0.82 * LPGLitresSold;
-            busyvehicles();
-            intrface();
-            Thread.Sleep(Convert.ToInt32(fuellingtime * 100));
-            Console.Clear();
+            fuellingtime = (150 - pumpvehicle.tankcapacity) / 1.5;//we have a criteria which says that pump can dispense 1.5 litres/second
+            totalLPGsold += 150 - pumpvehicle.tankcapacity;//total diesel sold
+            LPGLitresSold = 150 - pumpvehicle.tankcapacity;//how much litres of diesel have been sold for this vehicle
+            money += 0.82 * LPGLitresSold;// total earned money for HGVs
+            busyvehicles();//this method is for interface which can show to us different condition of vehicles but this method is for busy condition
+            Thread.Sleep(Convert.ToInt32(fuellingtime * 100));//thread is sleeping which shows that van is fuelling
             fuelledvehicles++;
-            Program.queueing.Remove(pumpvehicle);
-            Available = "avail";
-            availvehicles();
-            intrface();
-            Thread.Sleep(1000);
-            Console.Clear();
+            Program.queueing.Remove(pumpvehicle);// removing HGV from the list
+            Available = "avail";//pump is getting available
+            Program.amountofhgvs--;
+            availvehicles();//this method is for interface which can show to us different condition of vehicles
         }
     }
-    static public void intrface()
+    static public void intrface() //interface method
     {
         Console.WriteLine("----------------------------------");
         Console.WriteLine("Queue: Cars: " + Program.amountofcars + " Vans: " + Program.amountofvans + " HGVs: " + Program.amountofhgvs);
@@ -85,7 +73,7 @@ public class Pump
         Console.WriteLine("Line 2:   Pump 4:  " + Program.pump4status + "  Pump 5:  " + Program.pump5status + "  Pump 6:  " + Program.pump6status);
         Console.WriteLine("Line 3:   Pump 7:  " + Program.pump7status + "  Pump 8:  " + Program.pump8status + "  Pump 9:  " + Program.pump9status);
     }
-    public static void data()
+    public static void data() //method for storing data inside of the file
     {
         datafile.WriteLine("    " + "Petrol: " + totalpetrolsold);
         datafile.WriteLine("    " + "Diesel: " + totaldieselsold);
@@ -93,6 +81,7 @@ public class Pump
         datafile.WriteLine("Cost: " + money + " GBP");
         datafile.WriteLine("1%:   " + money / 100 + " GBP");
         datafile.WriteLine("Vehicles serviced: " + fuelledvehicles);
+        datafile.WriteLine("Vehicles gone before: " + (10 - fuelledvehicles));
         datafile.Close();
         try
         {
@@ -109,7 +98,7 @@ public class Pump
         }
         datafile.Close();
     }
-    public void busyvehicles()
+    public void busyvehicles() //method for changing condition of the pump to busy
     {
         if (Program.neededpump == 8)
         {
@@ -148,7 +137,7 @@ public class Pump
             Program.pump1status = "busy";
         }
     }
-    public void availvehicles()
+    public void availvehicles()//method for changing condition of the pump to available
     {
         if (Program.neededpump == 8)
         {

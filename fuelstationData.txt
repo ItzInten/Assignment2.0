@@ -1,0 +1,9 @@
+    Login: Borys
+    Password: Prydatko
+    Petrol: 102
+    Diesel: 108
+    LPG: 517
+Cost: 802.24 GBP
+1%:   8.0224 GBP
+Vehicles serviced: 9
+Vehicles gone before: 1
